@@ -4,8 +4,15 @@ buildscript {
 		cloudVersion = '1.0.0.RELEASE'
     }
     repositories {
-        mavenCentral()
-        jcenter()
+        //mavenCentral()
+		 maven  {
+			url "http://repo1.maven.org/maven2"
+		}
+		
+        //jcenter()
+		jcenter {
+			url "http://jcenter.bintray.com/"
+		}
     }
     
     dependencies {
@@ -38,8 +45,15 @@ jar {
 }
 
 repositories { 
-	mavenCentral() 
-	jcenter()
+	//mavenCentral()
+	 maven  {
+		url "http://repo1.maven.org/maven2"
+	}
+	
+	//jcenter()
+	jcenter {
+		url "http://jcenter.bintray.com/"
+	}
 }
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:${project.bootVersion}")    

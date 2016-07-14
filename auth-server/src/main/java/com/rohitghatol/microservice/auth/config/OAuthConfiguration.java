@@ -25,6 +25,19 @@ import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
  * authenticate the user and define the client that seeks authorization on the
  * resource owner's behalf.
  */
+
+/**
+ * Execution order of method :
+ * 
+ *  OAuthConfiguration : AuthenticationManagerConfiguration : In init
+	OAuthConfiguration : In configure 2
+	OAuthConfiguration : In authorizationCodeServices
+	OAuthConfiguration : In Token store
+	OAuthConfiguration : In configure 3
+	
+	OAuthConfiguration : In configure
+ * 
+ * */
 @Configuration
 @EnableAuthorizationServer
 public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
@@ -46,17 +59,21 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
 	 */
 	@Bean
 	public JdbcTokenStore tokenStore() {
+		System.out.println("OAuthConfiguration : In Token store");
+		
 		return new JdbcTokenStore(dataSource);
 	}
 
 	@Bean
 	protected AuthorizationCodeServices authorizationCodeServices() {
+		System.out.println("OAuthConfiguration : In authorizationCodeServices");
 		return new JdbcAuthorizationCodeServices(dataSource);
 	}
 
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security)
 			throws Exception {
+		System.out.println("OAuthConfiguration : In configure");
 		security.passwordEncoder(passwordEncoder);
 	}
 
@@ -71,6 +88,7 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints)
 			throws Exception {
+		System.out.println("OAuthConfiguration : In configure 2");
 		endpoints.authorizationCodeServices(authorizationCodeServices())
 				.authenticationManager(auth).tokenStore(tokenStore())
 				.approvalStoreDisabled();
@@ -84,6 +102,7 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
 	public void configure(ClientDetailsServiceConfigurer clients)
 			throws Exception {
 	
+		System.out.println("OAuthConfiguration : In configure 3");
 		clients.jdbc(dataSource)
 				.passwordEncoder(passwordEncoder)
 				.withClient("client")
@@ -117,6 +136,7 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
 		 */
 		@Override
 		public void init(AuthenticationManagerBuilder auth) throws Exception {
+			System.out.println("OAuthConfiguration : AuthenticationManagerConfiguration : In init");
 			// @formatter:off
 			auth.jdbcAuthentication().dataSource(dataSource).withUser("dave")
 					.password("secret").roles("USER");

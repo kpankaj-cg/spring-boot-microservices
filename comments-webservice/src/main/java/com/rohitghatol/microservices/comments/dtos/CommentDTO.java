@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.rohitghatol.microservices.comments.dtos;
 
 import java.io.IOException;

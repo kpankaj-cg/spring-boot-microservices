@@ -18,6 +18,16 @@ import org.springframework.stereotype.Component;
  * @author anilallewar
  *
  */
+
+/**
+ * Execution order of methods 
+ * 
+ * After OAuthConfiguartion configure method execution, 
+ * 
+ * 	ResourceServerConfiguration : In configure 2
+	ResourceServerConfiguration : In configure
+ * 
+ * */
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
@@ -34,6 +44,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	 */
 	@Override 
     public void configure(HttpSecurity http) throws Exception {
+		System.out.println("ResourceServerConfiguration : In configure");
          // @formatter:off
          http
          .requestMatchers().antMatchers("/me")    
@@ -63,6 +74,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	 */
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+    	System.out.println("ResourceServerConfiguration : In configure 2");
          resources.resourceId("apis");
     }
 }

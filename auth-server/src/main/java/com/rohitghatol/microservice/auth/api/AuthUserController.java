@@ -23,6 +23,7 @@ public class AuthUserController {
 	 */
 	@RequestMapping("/me")
 	public Principal getCurrentLoggedInUser(Principal user) {
+		System.out.println("AuthUserController : In getCurrentLoggedInUser");
 		return user;
 	}
 }
